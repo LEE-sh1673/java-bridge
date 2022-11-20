@@ -1,5 +1,7 @@
 package bridge.domain;
 
+import static bridge.domain.ErrorMessage.INVALID_DIRECTION;
+
 import java.util.Arrays;
 
 public enum Direction {
@@ -16,7 +18,9 @@ public enum Direction {
         return Arrays.stream(values())
             .filter(direction -> direction.matchMark(mark))
             .findAny()
-            .orElseThrow(IllegalArgumentException::new);
+            .orElseThrow(() ->
+                new IllegalArgumentException(INVALID_DIRECTION.getMessage())
+            );
     }
 
     private boolean matchMark(final String mark) {
