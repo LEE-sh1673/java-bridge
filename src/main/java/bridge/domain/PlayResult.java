@@ -5,9 +5,13 @@ public enum PlayResult {
     MISS("X"),
     NONE(" ");
 
-    private final String sign;
+    private final String mark;
 
-    PlayResult(final String sign) {
-        this.sign = sign;
+    PlayResult(final String mark) {
+        this.mark = mark;
+    }
+
+    public String getMark() {
+        return mark;
     }
 }
