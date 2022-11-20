@@ -26,6 +26,6 @@ class BridgeMakerTest {
     void createBridgeOfSpecificSize(int bridgeSize) {
         List<String> bridge = bridgeMaker.makeBridge(bridgeSize);
         assertThat(bridge.size()).isEqualTo(bridgeSize);
-        assertThat(bridge).contains("U", "D");
+        assertThat(bridge).containsAnyOf("U", "D");
     }
 }
