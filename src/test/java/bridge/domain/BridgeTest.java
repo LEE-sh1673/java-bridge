@@ -1,6 +1,7 @@
 package bridge.domain;
 
 import static bridge.domain.ErrorMessage.INVALID_BRIDGE_SIZE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class BridgeTest {
+
+    static Bridge bridge = new Bridge(List.of("U", "D", "D"));
 
     @DisplayName("다리의 길이가 3~20 범위가 아닌 숫자일 경우 예외르 발생시킨다.")
     @ParameterizedTest
@@ -27,11 +30,31 @@ public class BridgeTest {
             Arguments.of(List.of("U")),
             Arguments.of(List.of("")),
             Arguments.of(
-                List.of("U", "D", "U", "D", "U",
-                    "D", "U", "D", "U", "D",
-                    "U", "D", "U", "D", "U",
-                    "D", "U", "D", "U", "D", "U")
+                List.of("U", "D", "U", "D", "U", "D", "U",
+                    "D", "U", "D", "U", "D", "U", "D", "U", "D", "U",
+                    "D", "U", "D", "U")
             )
+        );
+    }
+
+    @DisplayName("다리에서 플레이어가 이동한 칸을 비교한 결과를 구할 수 있다.")
+    @ParameterizedTest
+    @MethodSource("providePlayerInputWithExpectedOutputInRound")
+    void crossBridgePerRound(int round, Direction direction, PlayStatus expected) {
+        PlayStatus status = bridge.cross(direction, round);
+        assertThat(status.getPlayerDirection())
+            .isEqualTo(expected.getPlayerDirection());
+        assertThat(status.getResult())
+            .isEqualTo(expected.getResult());
+    }
+
+    private static Stream<Arguments> providePlayerInputWithExpectedOutputInRound() {
+        return Stream.of(
+            Arguments.of(1, Direction.UP, new PlayStatus(Direction.UP, PlayResult.MATCH)),
+            Arguments.of(1, Direction.DOWN, new PlayStatus(Direction.DOWN, PlayResult.MISS)),
+            Arguments.of(2, Direction.DOWN, new PlayStatus(Direction.DOWN, PlayResult.MATCH)),
+            Arguments.of(3, Direction.DOWN, new PlayStatus(Direction.DOWN, PlayResult.MATCH)),
+            Arguments.of(2, Direction.UP, new PlayStatus(Direction.UP, PlayResult.MISS))
         );
     }
 }

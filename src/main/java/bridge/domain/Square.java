@@ -2,10 +2,10 @@ package bridge.domain;
 
 public class Square {
 
-    private final Direction mark;
+    private final Direction direction;
 
     public Square(final String direction) {
-        this.mark = Direction.of(direction);
+        this.direction = Direction.of(direction);
     }
 
     @Override
@@ -18,6 +18,6 @@ public class Square {
             return false;
         }
         Square other = (Square) obj;
-        return this.mark == other.mark;
+        return this.direction == other.direction;
     }
 }
