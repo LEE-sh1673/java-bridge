@@ -1,8 +1,6 @@
 package bridge.controller;
 
-import bridge.BridgeMaker;
-import bridge.BridgeRandomNumberGenerator;
-import bridge.domain.Bridge;
+import bridge.service.BridgeGame;
 import bridge.domain.GameCommend;
 import bridge.domain.PlayStatus;
 import bridge.view.InputView;
@@ -10,56 +8,48 @@ import bridge.view.OutputView;
 
 public class BridgeGameController {
 
-    BridgeInputController inputController;
+    private final BridgeInputController inputController;
 
-    OutputView outputView;
+    private final OutputView outputView;
 
-    BridgeMaker bridgeMaker;
-
-    static int numberOfAttempts = 1;
-
-    static Bridge bridge;
-
-    static GameCommend gameCommend = GameCommend.NONE;
+    private BridgeGame bridgeGame;
 
     public BridgeGameController() {
         inputController = new BridgeInputController(new InputView());
         outputView = new OutputView();
-        bridgeMaker = new BridgeMaker(new BridgeRandomNumberGenerator());
     }
 
     public void start() {
-        bridge = createBridge(inputController.setBridgeSize());
-        outputView.printResult(playGame(), numberOfAttempts);
+        // Create Bridge
+        bridgeGame = new BridgeGame(inputController.setBridgeSize());
+
+        // Play game
+        playGame();
+
+        // Print game results
+        outputView.printResult(bridgeGame.isSuccess(), bridgeGame.getAttempts());
     }
 
-    private boolean playGame() {
-        boolean isGameDone;
-        do {
-            isGameDone = processGame();
-        } while (!isGameDone && gameCommend != GameCommend.EXIT);
-        return isGameDone;
+    private void playGame() {
+        processGame();
+        if (!bridgeGame.isSuccess()) {
+            askForRestart();
+        }
     }
 
-    private boolean processGame() {
-        for (int round = 1; round <= bridge.getSize(); round++) {
-            PlayStatus status = move(round);
+    private void processGame() {
+        while (!bridgeGame.isSuccess()) {
+            PlayStatus status = bridgeGame.move(inputController.setDirection());
             outputView.printMap(status);
 
             if (status.isGameOver()) {
-                askForRestart();
-                return false;
+                break;
             }
         }
-        return true;
-    }
-
-    private PlayStatus move(final int round) {
-        return bridge.cross(inputController.setDirection(), round);
     }
 
     private void askForRestart() {
-        gameCommend = inputController.setGameCommend();
+        GameCommend gameCommend = inputController.setGameCommend();
         if (gameCommend == GameCommend.RESTART) {
             resetGame();
         }
@@ -67,10 +57,6 @@ public class BridgeGameController {
 
     private void resetGame() {
         outputView.clearMap();
-        numberOfAttempts++;
-    }
-
-    private Bridge createBridge(final int bridgeSize) {
-        return new Bridge(bridgeMaker.makeBridge(bridgeSize));
+        bridgeGame.retry();
     }
 }
