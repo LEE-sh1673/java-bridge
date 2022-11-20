@@ -1,6 +1,6 @@
 package bridge.domain;
 
-import static bridge.domain.ErrorMessage.INVALID_DIRECTION;
+import static bridge.ErrorMessage.INVALID_DIRECTION;
 
 import java.util.Arrays;
 

@@ -1,6 +1,6 @@
 package bridge.domain;
 
-import static bridge.domain.ErrorMessage.INVALID_BRIDGE_SIZE;
+import static bridge.ErrorMessage.INVALID_BRIDGE_SIZE;
 
 
 public class BridgeSizeValidator {

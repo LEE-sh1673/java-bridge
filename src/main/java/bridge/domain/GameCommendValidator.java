@@ -1,6 +1,6 @@
 package bridge.domain;
 
-import static bridge.domain.ErrorMessage.INVALID_GAME_COMMEND;
+import static bridge.ErrorMessage.INVALID_GAME_COMMEND;
 
 public class GameCommendValidator {
 
