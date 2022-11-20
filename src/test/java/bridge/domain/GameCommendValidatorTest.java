@@ -13,7 +13,7 @@ public class GameCommendValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {"E", "S_35*abE", "3", "ASFSA", "FSd"})
     void validateIsCorrectGameCommend(String commend) {
-        assertThatThrownBy(() -> new GameCommendValidator(commend))
+        assertThatThrownBy(() -> GameCommend.of(commend))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining(INVALID_GAME_COMMEND.getMessage());
     }

@@ -1,5 +1,7 @@
 package bridge.domain;
 
+import static bridge.ErrorMessage.INVALID_GAME_COMMEND;
+
 import java.util.Arrays;
 
 public enum GameCommend {
@@ -12,9 +14,13 @@ public enum GameCommend {
         this.commend = commend;
     }
 
-    public static boolean contains(final String commend) {
+    public static GameCommend of(final String commend) {
         return Arrays.stream(values())
-            .anyMatch(gameCommend -> gameCommend.matchCommend(commend));
+            .filter(gameCommend -> gameCommend.matchCommend(commend))
+            .findFirst()
+            .orElseThrow(() ->
+                new IllegalArgumentException(INVALID_GAME_COMMEND.getMessage())
+            );
     }
 
     private boolean matchCommend(final String commend) {
