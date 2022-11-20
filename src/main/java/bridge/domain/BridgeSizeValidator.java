@@ -27,4 +27,8 @@ public class BridgeSizeValidator {
     private boolean isOutOfBound(final int bridgeSize) {
         return bridgeSize > MAX_BRIDGE_SIZE || bridgeSize < MIN_BRIDGE_SIZE;
     }
+
+    public int getBridgeSize() {
+        return bridgeSize;
+    }
 }
