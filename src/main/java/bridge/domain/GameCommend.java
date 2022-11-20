@@ -6,7 +6,8 @@ import java.util.Arrays;
 
 public enum GameCommend {
     RESTART("R"),
-    EXIT("Q");
+    EXIT("Q"),
+    NONE("");
 
     private final String commend;
 

@@ -23,4 +23,8 @@ public class Bridge {
     private boolean matchDirection(final Direction direction, final int round) {
         return directions.get(round - 1) == direction;
     }
+
+    public int getSize() {
+        return directions.size();
+    }
 }

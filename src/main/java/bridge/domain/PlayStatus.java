@@ -17,5 +17,9 @@ public class PlayStatus {
     public PlayResult getResult() {
         return result;
     }
+
+    public boolean isGameOver() {
+        return result == PlayResult.MISS;
+    }
 }
 
