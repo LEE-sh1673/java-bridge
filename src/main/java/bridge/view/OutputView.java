@@ -1,4 +1,4 @@
-package bridge;
+package bridge.view;
 
 import static bridge.Constants.BRIDGE_DELIMITER;
 import static bridge.Constants.BRIDGE_HEAD;
