@@ -12,7 +12,7 @@ public class BridgeGameController {
 
     private final OutputView outputView;
 
-    private BridgeGame bridgeGame;
+    private BridgeGame game;
 
     public BridgeGameController() {
         inputController = new BridgeInputController(new InputView());
@@ -21,28 +21,29 @@ public class BridgeGameController {
 
     public void start() {
         // Create Bridge
-        bridgeGame = new BridgeGame(inputController.setBridgeSize());
+        game = new BridgeGame(inputController.setBridgeSize());
 
         // Play game
         playGame();
 
         // Print game results
-        outputView.printResult(bridgeGame.isSuccess(), bridgeGame.getAttempts());
+        outputView.printResult(game);
     }
 
     private void playGame() {
-        processGame();
-        if (!bridgeGame.isSuccess()) {
+        process();
+
+        if (!game.isCleared()) {
             askForRestart();
         }
     }
 
-    private void processGame() {
-        while (!bridgeGame.isSuccess()) {
-            PlayResult status = bridgeGame.move(inputController.setDirection());
-            outputView.printMap(status);
+    private void process() {
+        for (int round = 1; round <= game.getRound(); round++) {
+            PlayResult playResult = game.move(inputController.setDirection(), round);
+            outputView.printMap(playResult);
 
-            if (status.isGameOver()) {
+            if (playResult.isFail() || game.isCleared()) {
                 break;
             }
         }
@@ -51,12 +52,17 @@ public class BridgeGameController {
     private void askForRestart() {
         GameCommend gameCommend = inputController.setGameCommend();
         if (gameCommend == GameCommend.RESTART) {
-            resetGame();
+            restartGame();
         }
+    }
+
+    private void restartGame() {
+        resetGame();
+        playGame();
     }
 
     private void resetGame() {
         outputView.clearMap();
-        bridgeGame.retry();
+        game.retry();
     }
 }

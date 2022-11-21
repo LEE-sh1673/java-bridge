@@ -18,7 +18,7 @@ public class PlayResult {
         return result;
     }
 
-    public boolean isGameOver() {
+    public boolean isFail() {
         return result == CompareResult.MISS;
     }
 }

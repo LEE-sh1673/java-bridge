@@ -5,6 +5,7 @@ import bridge.BridgeRandomNumberGenerator;
 import bridge.domain.Bridge;
 import bridge.domain.Direction;
 import bridge.domain.PlayResult;
+import bridge.domain.Square;
 
 /**
  * 다리 건너기 게임을 관리하는 클래스
@@ -13,14 +14,14 @@ public class BridgeGame {
 
     private final Bridge bridge;
 
-    private int round;
+    private int playerPasses;
 
     private int attempts;
 
     public BridgeGame(final int bridgeSize) {
         this.bridge = createBridge(bridgeSize);
+        this.playerPasses = 0;
         this.attempts = 1;
-        this.round = 1;
     }
 
     private Bridge createBridge(final int bridgeSize) {
@@ -33,13 +34,15 @@ public class BridgeGame {
      * <p>
      * 이동을 위해 필요한 메서드의 반환 타입(return type), 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
-    public PlayResult move(final Direction direction) {
-        //TODO: refactoring LATER
-//        PlayStatus playStatus = bridge.compare(new Square(direction, round));
-//        round++;
-        return null;
-    }
+    public PlayResult move(final Direction direction, final int round) {
+        Square square = new Square(direction, round);
+        PlayResult playResult = new PlayResult(direction, bridge.compare(square));
 
+        if (!playResult.isFail()) {
+            playerPasses++;
+        }
+        return playResult;
+    }
 
     /**
      * 사용자가 게임을 다시 시도할 때 사용하는 메서드
@@ -48,14 +51,18 @@ public class BridgeGame {
      */
     public void retry() {
         attempts += 1;
-        round = 1;
+        playerPasses = 0;
     }
 
-    public boolean isSuccess() {
-        return round > bridge.getSize();
+    public boolean isCleared() {
+        return playerPasses == bridge.getSize();
     }
 
     public int getAttempts() {
         return attempts;
+    }
+
+    public int getRound() {
+        return bridge.getSize();
     }
 }

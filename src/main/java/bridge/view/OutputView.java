@@ -10,6 +10,7 @@ import static bridge.Constants.ROUND_RESULT_NUMBER_OF_ATTEMPTS;
 import bridge.domain.Direction;
 import bridge.domain.CompareResult;
 import bridge.domain.PlayResult;
+import bridge.service.BridgeGame;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -95,10 +96,10 @@ public class OutputView {
      * <p>
      * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
-    public void printResult(final boolean isGameDone, final int numberOfAttempts) {
+    public void printResult(final BridgeGame game) {
         System.out.println(ROUND_RESULT);
         printBridges();
-        System.out.println(ROUND_RESULT_IS_SUCCESS + (isGameDone ? "성공": "실패"));
-        System.out.println(ROUND_RESULT_NUMBER_OF_ATTEMPTS + numberOfAttempts);
+        System.out.println(ROUND_RESULT_IS_SUCCESS + (game.isCleared() ? "성공": "실패"));
+        System.out.println(ROUND_RESULT_NUMBER_OF_ATTEMPTS + game.getAttempts());
     }
 }
