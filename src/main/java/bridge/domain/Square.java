@@ -1,7 +1,5 @@
 package bridge.domain;
 
-import java.util.Objects;
-
 public class Square {
 
     private final Direction direction;
@@ -36,6 +34,10 @@ public class Square {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(direction.getMark() + position);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + position;
+        result = prime * result + ((direction == null) ? 0 : direction.hashCode());
+        return result;
     }
 }
