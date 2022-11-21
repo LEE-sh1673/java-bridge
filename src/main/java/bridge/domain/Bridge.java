@@ -1,30 +1,27 @@
 package bridge.domain;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Bridge {
 
-    private final List<Direction> directions;
+    private final List<Square> squares;
 
     public Bridge(final List<String> directions) {
-        this.directions = directions.stream()
-            .map(Direction::of)
-            .collect(Collectors.toList());
-    }
-
-    public PlayStatus cross(final Direction direction, final int round) {
-        if (matchDirection(direction, round)) {
-            return new PlayStatus(direction, PlayResult.MATCH);
+        this.squares = new ArrayList<>();
+        for (int i = 0; i < directions.size(); i++) {
+            squares.add(new Square(Direction.of(directions.get(i)), i+1));
         }
-        return new PlayStatus(direction, PlayResult.MISS);
     }
 
-    private boolean matchDirection(final Direction direction, final int round) {
-        return directions.get(round - 1) == direction;
+    public CompareResult compare(final Square square) {
+        if (squares.contains(square)) {
+            return CompareResult.MATCH;
+        }
+        return CompareResult.MISS;
     }
 
     public int getSize() {
-        return directions.size();
+        return squares.size();
     }
 }
