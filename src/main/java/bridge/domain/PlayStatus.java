@@ -3,9 +3,9 @@ public class PlayStatus {
 
     private final Direction playerDirection;
 
-    private final PlayResult result;
+    private final CompareResult result;
 
-    public PlayStatus(final Direction playerDirection, final PlayResult status) {
+    public PlayStatus(final Direction playerDirection, final CompareResult status) {
         this.playerDirection = playerDirection;
         this.result = status;
     }
@@ -14,12 +14,12 @@ public class PlayStatus {
         return playerDirection;
     }
 
-    public PlayResult getResult() {
+    public CompareResult getResult() {
         return result;
     }
 
     public boolean isGameOver() {
-        return result == PlayResult.MISS;
+        return result == CompareResult.MISS;
     }
 }
 
