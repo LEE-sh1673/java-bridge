@@ -19,4 +19,10 @@ public final class Constants {
     public static final String INPUT_MOVING_SQUARE = "이동할 칸을 선택해주세요. (위: U, 아래: D)";
 
     public static final String INPUT_RESTART_OR_TERMINATE = "게임을 다시 시도할지 여부를 입력해주세요. (재시도: R, 종료: Q)";
+
+    public static final String OUTPUT_PASS = "O";
+
+    public static final String OUTPUT_FAIL = "O";
+
+    public static final String OUTPUT_NONE = " ";
 }

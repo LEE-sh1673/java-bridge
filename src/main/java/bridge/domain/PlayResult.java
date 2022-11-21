@@ -14,12 +14,12 @@ public class PlayResult {
         return playerDirection;
     }
 
-    public CompareResult getResult() {
-        return result;
-    }
-
     public boolean isFail() {
         return result == CompareResult.MISS;
+    }
+
+    public boolean isPass() {
+        return result == CompareResult.MATCH;
     }
 }
 

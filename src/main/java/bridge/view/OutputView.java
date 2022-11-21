@@ -3,12 +3,14 @@ package bridge.view;
 import static bridge.Constants.BRIDGE_DELIMITER;
 import static bridge.Constants.BRIDGE_HEAD;
 import static bridge.Constants.BRIDGE_TAIL;
+import static bridge.Constants.OUTPUT_FAIL;
+import static bridge.Constants.OUTPUT_NONE;
+import static bridge.Constants.OUTPUT_PASS;
 import static bridge.Constants.ROUND_RESULT;
 import static bridge.Constants.ROUND_RESULT_IS_SUCCESS;
 import static bridge.Constants.ROUND_RESULT_NUMBER_OF_ATTEMPTS;
 
 import bridge.domain.Direction;
-import bridge.domain.CompareResult;
 import bridge.domain.PlayResult;
 import bridge.service.BridgeGame;
 import java.util.ArrayList;
@@ -16,20 +18,20 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 사용자에게 게임 진행 상황과 결과를 출력하는 역할을 한다.
  */
 public class OutputView {
-    private Map<Direction, List<CompareResult>> bridges;
+
+    private Map<Direction, List<String>> bridges;
 
     public OutputView() {
         this.bridges = mapBridges();
     }
 
-    private Map<Direction, List<CompareResult>> mapBridges() {
-        Map<Direction, List<CompareResult>> bridges = new HashMap<>();
+    private Map<Direction, List<String>> mapBridges() {
+        Map<Direction, List<String>> bridges = new HashMap<>();
         for (Direction direction : Direction.values()) {
             bridges.put(direction, new ArrayList<>());
         }
@@ -47,24 +49,32 @@ public class OutputView {
     }
 
     private void updateBridges(final PlayResult playResult) {
-        updateValidSpaceBridge(playResult);
-        updateEmptySpaceBridge(playResult);
-    }
-
-    private void updateValidSpaceBridge(final PlayResult playResult) {
-        updateBridge(playResult.getPlayerDirection(), playResult.getResult());
-    }
-
-    private void updateBridge(final Direction direction, final CompareResult compareResult) {
-        bridges.computeIfAbsent(direction, bridge -> new ArrayList<>())
-            .add(compareResult);
-    }
-
-    private void updateEmptySpaceBridge(final PlayResult playResult) {
         bridges.keySet()
-            .stream()
-            .filter(direction -> direction != playResult.getPlayerDirection())
-            .forEach(direction -> updateBridge(direction, CompareResult.NONE));
+            .forEach(direction -> updateBridge(direction, playResult));
+    }
+
+    private void updateBridge(final Direction direction, final PlayResult playResult) {
+        bridges.computeIfAbsent(direction, bridge -> new ArrayList<>())
+            .add(getResultMessage(direction, playResult));
+    }
+
+    private String getResultMessage(final Direction direction,
+        final PlayResult playResult) {
+
+        if (playResult.getPlayerDirection() == direction) {
+            return convertResultMessage(playResult);
+        }
+        return OUTPUT_NONE;
+    }
+
+    private String convertResultMessage(final PlayResult PlayResult) {
+        if (PlayResult.isPass()) {
+            return OUTPUT_PASS;
+        }
+        if (PlayResult.isFail()) {
+            return OUTPUT_FAIL;
+        }
+        return OUTPUT_NONE;
     }
 
     private void printBridges() {
@@ -74,16 +84,8 @@ public class OutputView {
 
     private void printBridge(final Direction direction) {
         System.out.print(BRIDGE_HEAD);
-        printPlayResults(direction);
+        System.out.print(String.join(BRIDGE_DELIMITER, bridges.get(direction)));
         System.out.println(BRIDGE_TAIL);
-    }
-
-    private void printPlayResults(final Direction direction) {
-        String results = bridges.get(direction)
-            .stream()
-            .map(CompareResult::getMark)
-            .collect(Collectors.joining(BRIDGE_DELIMITER));
-        System.out.print(results);
     }
 
     public void clearMap() {
@@ -99,7 +101,7 @@ public class OutputView {
     public void printResult(final BridgeGame game) {
         System.out.println(ROUND_RESULT);
         printBridges();
-        System.out.println(ROUND_RESULT_IS_SUCCESS + (game.isCleared() ? "성공": "실패"));
+        System.out.println(ROUND_RESULT_IS_SUCCESS + (game.isCleared() ? "성공" : "실패"));
         System.out.println(ROUND_RESULT_NUMBER_OF_ATTEMPTS + game.getAttempts());
     }
 }
