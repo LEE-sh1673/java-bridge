@@ -3,6 +3,7 @@ package bridge.domain;
 import static bridge.ErrorMessage.INVALID_GAME_COMMEND;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import bridge.GameCommend;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

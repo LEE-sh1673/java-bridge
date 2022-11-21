@@ -1,4 +1,4 @@
-package bridge.domain;
+package bridge;
 
 import static bridge.ErrorMessage.INVALID_GAME_COMMEND;
 

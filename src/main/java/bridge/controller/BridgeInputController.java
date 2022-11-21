@@ -2,7 +2,7 @@ package bridge.controller;
 
 import bridge.domain.BridgeSizeValidator;
 import bridge.domain.Direction;
-import bridge.domain.GameCommend;
+import bridge.GameCommend;
 import bridge.view.InputView;
 
 public class BridgeInputController {

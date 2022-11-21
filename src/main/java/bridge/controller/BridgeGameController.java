@@ -1,7 +1,7 @@
 package bridge.controller;
 
 import bridge.service.BridgeGame;
-import bridge.domain.GameCommend;
+import bridge.GameCommend;
 import bridge.domain.PlayStatus;
 import bridge.view.InputView;
 import bridge.view.OutputView;
