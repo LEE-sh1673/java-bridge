@@ -21,8 +21,9 @@ public class SquareTest {
     @DisplayName("서로 칸을 비교할 수 있다.")
     @Test
     void compareSquares() {
-        Square square = new Square("U");
-        assertThat(square.equals(new Square("D"))).isFalse();
-        assertThat(square.equals(new Square("U"))).isTrue();
+        Square square = new Square("U", 1);
+        assertThat(square.equals(new Square("D", 1))).isFalse();
+        assertThat(square.equals(new Square("U", 1))).isTrue();
+        assertThat(square.equals(new Square("U", 2))).isFalse();
     }
 }
