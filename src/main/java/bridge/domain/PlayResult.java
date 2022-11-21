@@ -1,17 +1,17 @@
 package bridge.domain;
 public class PlayResult {
 
-    private final Direction playerDirection;
+    private final Direction direction;
 
     private final CompareResult result;
 
     public PlayResult(final Direction playerDirection, final CompareResult status) {
-        this.playerDirection = playerDirection;
+        this.direction = playerDirection;
         this.result = status;
     }
 
-    public Direction getPlayerDirection() {
-        return playerDirection;
+    public boolean isPlayerMovedIn(final Direction direction) {
+        return this.direction == direction;
     }
 
     public boolean isFail() {

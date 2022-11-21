@@ -61,7 +61,7 @@ public class OutputView {
     private String getResultMessage(final Direction direction,
         final PlayResult playResult) {
 
-        if (playResult.getPlayerDirection() == direction) {
+        if (playResult.isPlayerMovedIn(direction)) {
             return convertResultMessage(playResult);
         }
         return OUTPUT_NONE;
