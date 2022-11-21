@@ -1,11 +1,11 @@
 package bridge.domain;
-public class PlayStatus {
+public class PlayResult {
 
     private final Direction playerDirection;
 
     private final CompareResult result;
 
-    public PlayStatus(final Direction playerDirection, final CompareResult status) {
+    public PlayResult(final Direction playerDirection, final CompareResult status) {
         this.playerDirection = playerDirection;
         this.result = status;
     }

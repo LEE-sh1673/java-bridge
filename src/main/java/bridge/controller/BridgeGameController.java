@@ -2,7 +2,7 @@ package bridge.controller;
 
 import bridge.service.BridgeGame;
 import bridge.GameCommend;
-import bridge.domain.PlayStatus;
+import bridge.domain.PlayResult;
 import bridge.view.InputView;
 import bridge.view.OutputView;
 
@@ -39,7 +39,7 @@ public class BridgeGameController {
 
     private void processGame() {
         while (!bridgeGame.isSuccess()) {
-            PlayStatus status = bridgeGame.move(inputController.setDirection());
+            PlayResult status = bridgeGame.move(inputController.setDirection());
             outputView.printMap(status);
 
             if (status.isGameOver()) {

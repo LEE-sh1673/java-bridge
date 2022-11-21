@@ -9,7 +9,7 @@ import static bridge.Constants.ROUND_RESULT_NUMBER_OF_ATTEMPTS;
 
 import bridge.domain.Direction;
 import bridge.domain.CompareResult;
-import bridge.domain.PlayStatus;
+import bridge.domain.PlayResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,18 +40,18 @@ public class OutputView {
      * <p>
      * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
-    public void printMap(final PlayStatus playStatus) {
-        updateBridges(playStatus);
+    public void printMap(final PlayResult playResult) {
+        updateBridges(playResult);
         printBridges();
     }
 
-    private void updateBridges(final PlayStatus playStatus) {
-        updateValidSpaceBridge(playStatus);
-        updateEmptySpaceBridge(playStatus);
+    private void updateBridges(final PlayResult playResult) {
+        updateValidSpaceBridge(playResult);
+        updateEmptySpaceBridge(playResult);
     }
 
-    private void updateValidSpaceBridge(final PlayStatus playStatus) {
-        updateBridge(playStatus.getPlayerDirection(), playStatus.getResult());
+    private void updateValidSpaceBridge(final PlayResult playResult) {
+        updateBridge(playResult.getPlayerDirection(), playResult.getResult());
     }
 
     private void updateBridge(final Direction direction, final CompareResult compareResult) {
@@ -59,10 +59,10 @@ public class OutputView {
             .add(compareResult);
     }
 
-    private void updateEmptySpaceBridge(final PlayStatus playStatus) {
+    private void updateEmptySpaceBridge(final PlayResult playResult) {
         bridges.keySet()
             .stream()
-            .filter(direction -> direction != playStatus.getPlayerDirection())
+            .filter(direction -> direction != playResult.getPlayerDirection())
             .forEach(direction -> updateBridge(direction, CompareResult.NONE));
     }
 
