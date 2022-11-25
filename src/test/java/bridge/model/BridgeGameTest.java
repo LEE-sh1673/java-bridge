@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class BridgeGameTest {
@@ -79,5 +80,15 @@ public class BridgeGameTest {
             // 'UP-DOWN-DOWN', but 'DOWN-UP-UP'.
             Arguments.of(List.of("U", "D", "D"), List.of("D", "U", "U"), false)
         );
+    }
+
+    @DisplayName("플레이어가 다리를 건너는데 실패했는지에 대한 여부를 구할 수 있다.")
+    @ParameterizedTest
+    @CsvSource({"U,false", "D,true"})
+    void returnTrueIfPlayerFailToCrossBridge(final String direction, final boolean expected) {
+        game.retry();
+        game.move(direction);
+        game.getResult();
+        assertThat(game.isOver()).isEqualTo(expected);
     }
 }

@@ -47,4 +47,8 @@ public class BridgeGame {
     public boolean isClear() {
         return player.isLastRound() && bridge.match(player.getPosition());
     }
+
+    public boolean isOver() {
+        return !bridge.match(player.getPosition());
+    }
 }
