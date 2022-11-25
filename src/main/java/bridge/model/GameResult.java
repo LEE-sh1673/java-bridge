@@ -14,4 +14,8 @@ public class GameResult {
     public boolean isFail() {
         return compareResult == CompareResult.MISS;
     }
+
+    public boolean isPass() {
+        return compareResult == CompareResult.MATCH;
+    }
 }

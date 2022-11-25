@@ -20,11 +20,16 @@ public class Player {
     }
 
     public Tile getPosition() {
-        return path.get(path.size()-1);
+        return path.get(position - 1);
     }
 
     public GameResult cross(final Bridge bridge) {
         Tile tile = getPosition();
         return new GameResult(tile.getDirection(), bridge.contains(tile));
+    }
+
+    public void retry() {
+        path.clear();
+        position = 0;
     }
 }
