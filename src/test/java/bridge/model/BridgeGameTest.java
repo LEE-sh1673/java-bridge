@@ -44,4 +44,12 @@ public class BridgeGameTest {
             Arguments.of(List.of("U", "U", "U"))
         );
     }
+
+    @DisplayName("플레이어가 다리를 완전히 건넜는지에 대한 여부를 구할 수 있다. - True")
+    @ParameterizedTest
+    @MethodSource("providePlayerDirections")
+    void returnTrueIfPlayerCompleteCrossing(final List<String> directions) {
+        movePlayerToDirectionInBridge(directions);
+        assertThat(game.isClear()).isTrue();
+    }
 }

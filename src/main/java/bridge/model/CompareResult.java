@@ -1,5 +1,9 @@
 package bridge.model;
 
 public enum CompareResult {
-    MATCH, MISS
+    MATCH, MISS;
+
+    public boolean isMatch() {
+        return this == MATCH;
+    }
 }

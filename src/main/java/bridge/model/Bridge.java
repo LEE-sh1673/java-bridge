@@ -42,4 +42,8 @@ public class Bridge {
         }
         return CompareResult.MISS;
     }
+
+    public boolean match(final Tile tile) {
+        return contains(tile).isMatch();
+    }
 }

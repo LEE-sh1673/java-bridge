@@ -43,4 +43,8 @@ public class BridgeGame {
     public void retry() {
         player.retry();
     }
+
+    public boolean isClear() {
+        return player.isLastRound() && bridge.match(player.getPosition());
+    }
 }

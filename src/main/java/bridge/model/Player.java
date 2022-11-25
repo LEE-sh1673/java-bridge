@@ -32,4 +32,8 @@ public class Player {
         path.clear();
         position = 0;
     }
+
+    public boolean isLastRound() {
+        return position == path.size();
+    }
 }
