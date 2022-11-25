@@ -29,4 +29,16 @@ public class BridgeGameService {
     public int getNumberOfTries() {
         return numberOfTries;
     }
+
+    public void movePlayer(final String direction) {
+        bridgeGame.move(direction);
+    }
+
+    public boolean isOver() {
+        return bridgeGame.isOver();
+    }
+
+    public boolean isClear() {
+        return bridgeGame.isClear();
+    }
 }
