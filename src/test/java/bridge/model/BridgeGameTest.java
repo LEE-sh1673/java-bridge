@@ -21,35 +21,63 @@ public class BridgeGameTest {
         game.makeBridge(List.of("U", "D", "D"));
     }
 
+    @DisplayName("플레이어가 다리를 완전히 건넜는지에 대한 여부를 구할 수 있다. - True")
+    @ParameterizedTest
+    @MethodSource("providePlayerDirections")
+    void returnTrueIfPlayerCompleteCrossing(final List<String> directions,
+        final List<String> bridgeDirections,
+        final boolean expected) {
+
+        movePlayerToDirectionInBridge(directions, bridgeDirections, expected);
+        assertThat(game.isClear()).isEqualTo(expected);
+    }
+
     @DisplayName("플레이어가 다리의 특정 방향으로 이동할 수 있다.")
     @ParameterizedTest
     @MethodSource("providePlayerDirections")
-    void movePlayerToDirectionInBridge(final List<String> directions) {
+    void movePlayerToDirectionInBridge(final List<String> directions,
+        final List<String> bridgeDirections,
+        final boolean expected) {
+
         game.retry();
-        game.makeBridge(directions);
+        game.makeBridge(bridgeDirections);
 
         for (String direction : directions) {
             game.move(direction);
-            assertThat(game.getResult().isPass()).isTrue();
+            assertThat(game.getResult().isPass()).isEqualTo(expected);
         }
     }
 
     private static Stream<Arguments> providePlayerDirections() {
         return Stream.of(
             // 'UP-DOWN-DOWN'
-            Arguments.of(List.of("U", "D", "D")),
+            Arguments.of(List.of("U", "D", "D"),List.of("U", "D", "D"), true),
             // 'DOWN-DOWN-UP'
-            Arguments.of(List.of("D", "D", "U")),
+            Arguments.of(List.of("D", "D", "U"), List.of("D", "D", "U"), true),
             // 'UP-UP-UP'
-            Arguments.of(List.of("U", "U", "U"))
+            Arguments.of(List.of("U", "U", "U"), List.of("U", "U", "U"), true)
         );
     }
 
-    @DisplayName("플레이어가 다리를 완전히 건넜는지에 대한 여부를 구할 수 있다. - True")
+    @DisplayName("플레이어가 다리를 완전히 건넜는지에 대한 여부를 구할 수 있다. - False")
     @ParameterizedTest
-    @MethodSource("providePlayerDirections")
-    void returnTrueIfPlayerCompleteCrossing(final List<String> directions) {
-        movePlayerToDirectionInBridge(directions);
-        assertThat(game.isClear()).isTrue();
+    @MethodSource("provideFailPlayerDirections")
+    void returnFalseIfPlayerCompleteCrossing(final List<String> directions,
+        final List<String> bridgeDirections,
+        final boolean expected) {
+
+        movePlayerToDirectionInBridge(directions, bridgeDirections, expected);
+        assertThat(game.isClear()).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideFailPlayerDirections() {
+        return Stream.of(
+            // 'DOWN-UP-DOWN', but 'UP-DOWN-UP'.
+            Arguments.of(List.of("D", "U", "D"), List.of("U", "D", "U"), false),
+            // 'DOWN-DOWN-DOWN', but 'UP-UP-UP'.
+            Arguments.of(List.of("D", "D", "D"), List.of("U", "U", "U"), false),
+            // 'UP-DOWN-DOWN', but 'DOWN-UP-UP'.
+            Arguments.of(List.of("U", "D", "D"), List.of("D", "U", "U"), false)
+        );
     }
 }
