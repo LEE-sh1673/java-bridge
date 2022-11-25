@@ -18,4 +18,12 @@ public class GameResult {
     public boolean isPass() {
         return compareResult == CompareResult.MATCH;
     }
+
+    public String getResult() {
+        return compareResult.getShape();
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
 }

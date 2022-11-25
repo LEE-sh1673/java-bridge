@@ -3,6 +3,7 @@ package bridge.service;
 import bridge.BridgeGame;
 import bridge.BridgeMaker;
 import bridge.BridgeRandomNumberGenerator;
+import bridge.model.GameResult;
 
 public class BridgeGameService {
 
@@ -40,5 +41,9 @@ public class BridgeGameService {
 
     public boolean isClear() {
         return bridgeGame.isClear();
+    }
+
+    public GameResult getResult() {
+        return bridgeGame.getResult();
     }
 }

@@ -111,4 +111,24 @@ public class BridgeGameTest {
             Arguments.of(List.of("D", "U", "D"), false)
         );
     }
+
+    @DisplayName("현재까지 진행한 게임의 결과를 구할 수 있다.")
+    @ParameterizedTest
+    @MethodSource("provideDirectionWithGameResult")
+    void getGameResults(final String movingDirection,
+        final Direction direction,
+        final String resultMessage) {
+
+        game.move(movingDirection);
+        GameResult gameResult = game.getResult();
+        assertThat(gameResult.getDirection()).isEqualTo(direction);
+        assertThat(gameResult.getResult()).isEqualTo(resultMessage);
+    }
+
+    private static Stream<Arguments> provideDirectionWithGameResult() {
+        return Stream.of(
+            Arguments.of("U", Direction.UP, "O"),
+            Arguments.of("D", Direction.DOWN, "X")
+        );
+    }
 }
