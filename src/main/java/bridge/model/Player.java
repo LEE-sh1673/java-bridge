@@ -22,4 +22,9 @@ public class Player {
     public Tile getPosition() {
         return path.get(path.size()-1);
     }
+
+    public GameResult cross(final Bridge bridge) {
+        Tile tile = getPosition();
+        return new GameResult(tile.getDirection(), bridge.contains(tile));
+    }
 }

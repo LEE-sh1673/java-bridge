@@ -46,4 +46,8 @@ public class Tile {
     public int hashCode() {
         return Objects.hash(direction, position);
     }
+
+    public Direction getDirection() {
+        return direction;
+    }
 }
