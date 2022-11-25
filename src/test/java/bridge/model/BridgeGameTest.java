@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import bridge.BridgeGame;
 import java.util.List;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -14,12 +14,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class BridgeGameTest {
 
-    static BridgeGame game;
+    static BridgeGame game = new BridgeGame();
 
-    @BeforeAll
-    static void setUp() {
-        game = new BridgeGame();
+    @BeforeEach
+    void setUp() {
         game.makeBridge(List.of("U", "D", "D"));
+        game.retry();
     }
 
     @DisplayName("플레이어가 다리를 완전히 건넜는지에 대한 여부를 구할 수 있다. - True")
@@ -40,9 +40,7 @@ public class BridgeGameTest {
         final List<String> bridgeDirections,
         final boolean expected) {
 
-        game.retry();
         game.makeBridge(bridgeDirections);
-
         for (String direction : directions) {
             game.move(direction);
             assertThat(game.getResult().isPass()).isEqualTo(expected);
@@ -86,9 +84,31 @@ public class BridgeGameTest {
     @ParameterizedTest
     @CsvSource({"U,false", "D,true"})
     void returnTrueIfPlayerFailToCrossBridge(final String direction, final boolean expected) {
-        game.retry();
         game.move(direction);
         game.getResult();
         assertThat(game.isOver()).isEqualTo(expected);
+    }
+
+    @DisplayName("전체 기능 테스트")
+    @ParameterizedTest
+    @MethodSource("providePlayerInputWithResult")
+    void playGameCorrectly(final List<String> directions, final boolean expected) {
+        for (String direction : directions) {
+            game.move(direction);
+            game.getResult();
+
+            if (game.isOver()) {
+                break;
+            }
+        }
+        assertThat(game.isClear()).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> providePlayerInputWithResult() {
+        return Stream.of(
+            Arguments.of(List.of("U", "D", "D"), true),
+            Arguments.of(List.of("D", "U", "D"), false),
+            Arguments.of(List.of("D", "U", "D"), false)
+        );
     }
 }
