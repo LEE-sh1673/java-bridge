@@ -45,10 +45,10 @@ public class BridgeGame {
     }
 
     public boolean isClear() {
-        return player.isLastRound() && bridge.match(player.getPosition());
+        return player.isLastRound() && bridge.matchPosition(player.getPosition());
     }
 
     public boolean isOver() {
-        return !bridge.match(player.getPosition());
+        return !bridge.matchPosition(player.getPosition());
     }
 }
