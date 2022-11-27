@@ -5,8 +5,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public enum Direction {
-    UP("U", 0),
-    DOWN("D", 1);
+    UP("U", 1),
+    DOWN("D", 0);
 
     private final String shape;
 
