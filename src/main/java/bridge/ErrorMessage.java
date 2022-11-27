@@ -12,4 +12,7 @@ public class ErrorMessage {
 
     public static final String INVALID_NUMBER_FORMAT
         = MESSAGE_HEAD + "숫자만 입력 가능합니다.";
+
+    public static final String INVALID_GAME_COMMAND
+        = MESSAGE_HEAD + "게임 재시작/종료 여부는 R 또는 Q가 입력되어야 합니다.";
 }
