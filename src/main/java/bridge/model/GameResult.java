@@ -19,11 +19,11 @@ public class GameResult {
         return compareResult == CompareResult.MATCH;
     }
 
-    public String getResult() {
+    public String getMessage() {
         return compareResult.getShape();
     }
 
-    public Direction getDirection() {
-        return direction;
+    public boolean matchDirection(final Direction direction) {
+        return this.direction == direction;
     }
 }

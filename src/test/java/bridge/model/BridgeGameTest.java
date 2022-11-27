@@ -121,8 +121,8 @@ public class BridgeGameTest {
 
         game.move(movingDirection);
         GameResult gameResult = game.getResult();
-        assertThat(gameResult.getDirection()).isEqualTo(direction);
-        assertThat(gameResult.getResult()).isEqualTo(resultMessage);
+        assertThat(gameResult.matchDirection(direction)).isTrue();
+        assertThat(gameResult.getMessage()).isEqualTo(resultMessage);
     }
 
     private static Stream<Arguments> provideDirectionWithGameResult() {
