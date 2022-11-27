@@ -33,7 +33,15 @@ public class Player {
         position = 0;
     }
 
-    public boolean isLastRound() {
-        return position == path.size();
+    public boolean isReached(final Bridge bridge) {
+        return isAllMatch(bridge) && bridge.matchSize(path.size());
+    }
+
+    private boolean isAllMatch(final Bridge bridge) {
+        return path.stream().allMatch(bridge::matchPosition);
+    }
+
+    public boolean isFailedFrom(final Bridge bridge) {
+        return !bridge.matchPosition(getPosition());
     }
 }
