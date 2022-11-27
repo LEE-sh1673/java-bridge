@@ -1,5 +1,6 @@
 package bridge.controller;
 
+import bridge.GameCommand;
 import bridge.model.GameResult;
 import bridge.service.BridgeGameService;
 import bridge.view.InputView;
@@ -73,12 +74,21 @@ public class BridgeGameController {
 
     private void askRestart() {
         outputView.printRestartMessage();
-        String gameCommend = inputView.readGameCommand();
+        GameCommand gameCommand = getGameCommand();
 
-        if ("R".equals(gameCommend)) {
+        if (gameCommand.isRestart()) {
             bridgeGameService.retryGame();
             outputView.clearMap();
             playGame();
+        }
+    }
+
+    private GameCommand getGameCommand() {
+        try {
+            return GameCommand.of(inputView.readGameCommand());
+        } catch (IllegalArgumentException e) {
+            outputView.printErrorMessage(e);
+            return getGameCommand();
         }
     }
 }
