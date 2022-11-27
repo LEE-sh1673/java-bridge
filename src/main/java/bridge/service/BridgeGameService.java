@@ -1,50 +1,20 @@
 package bridge.service;
 
-import bridge.BridgeGame;
-import bridge.BridgeMaker;
-import bridge.BridgeNumberGenerator;
 import bridge.model.GameResult;
 
-public class BridgeGameService {
+public interface BridgeGameService {
 
-    private final BridgeMaker bridgeMaker;
+    void setUpBridge(final int bridgeSize);
 
-    private final BridgeGame bridgeGame;
+    void retryGame();
 
-    private int numberOfTries;
+    int getNumberOfTries();
 
-    public BridgeGameService(final BridgeNumberGenerator bridgeNumberGenerator) {
-        this.bridgeMaker = new BridgeMaker(bridgeNumberGenerator);
-        this.bridgeGame = new BridgeGame();
-        this.numberOfTries = 1;
-    }
+    void movePlayer(final String direction);
 
-    public void setUpBridge(final int bridgeSize) {
-        bridgeGame.makeBridge(bridgeMaker.makeBridge(bridgeSize));
-    }
+    boolean isOver();
 
-    public void retryGame() {
-        bridgeGame.retry();
-        numberOfTries++;
-    }
+    boolean isClear();
 
-    public int getNumberOfTries() {
-        return numberOfTries;
-    }
-
-    public void movePlayer(final String direction) {
-        bridgeGame.move(direction);
-    }
-
-    public boolean isOver() {
-        return bridgeGame.isOver();
-    }
-
-    public boolean isClear() {
-        return bridgeGame.isClear();
-    }
-
-    public GameResult getResult() {
-        return bridgeGame.getResult();
-    }
+    GameResult getResult();
 }

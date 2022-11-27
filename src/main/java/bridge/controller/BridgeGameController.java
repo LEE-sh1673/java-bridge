@@ -1,7 +1,7 @@
 package bridge.controller;
 
 import bridge.model.GameResult;
-import bridge.service.BridgeGameServiceImpl;
+import bridge.service.BridgeGameService;
 import bridge.view.InputView;
 import bridge.view.OutputView;
 
@@ -11,9 +11,9 @@ public class BridgeGameController {
 
     private final OutputView outputView;
 
-    private final BridgeGameServiceImpl bridgeGameService;
+    private final BridgeGameService bridgeGameService;
 
-    public BridgeGameController(final BridgeGameServiceImpl bridgeGameService) {
+    public BridgeGameController(final BridgeGameService bridgeGameService) {
         this.inputView = new InputView();
         this.outputView = new OutputView();
         this.bridgeGameService = bridgeGameService;

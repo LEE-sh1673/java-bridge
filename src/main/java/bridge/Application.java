@@ -6,10 +6,9 @@ import bridge.service.BridgeGameServiceImpl;
 public class Application {
 
     public static void main(String[] args) {
-        BridgeGameServiceImpl bridgeGameService
-            = new BridgeGameServiceImpl(new BridgeRandomNumberGenerator());
-        BridgeGameController bridgeGameController
-            = new BridgeGameController(bridgeGameService);
+        BridgeGameController bridgeGameController = new BridgeGameController(
+            new BridgeGameServiceImpl(new BridgeRandomNumberGenerator())
+        );
         bridgeGameController.start();
     }
 }

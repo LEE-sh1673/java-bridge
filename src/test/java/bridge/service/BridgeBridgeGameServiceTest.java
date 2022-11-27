@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 
 public class BridgeBridgeGameServiceTest {
 
-    static BridgeGameService bridgeGameService;
+    static BridgeGameServiceImpl bridgeGameService;
 
     @BeforeAll
     static void setUp() {
-        bridgeGameService = new BridgeGameService(new BridgeRandomNumberGenerator());
+        bridgeGameService = new BridgeGameServiceImpl(new BridgeRandomNumberGenerator());
         bridgeGameService.setUpBridge(3);
     }
 
