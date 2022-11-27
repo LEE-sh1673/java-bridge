@@ -9,4 +9,7 @@ public class ErrorMessage {
 
     public static final String INVALID_BRIDGE_SIZE
         = MESSAGE_HEAD + "다리의 길이는 3 ~ 20의 범위의 숫자만 입력가능합니다.";
+
+    public static final String INVALID_NUMBER_FORMAT
+        = MESSAGE_HEAD + "숫자만 입력 가능합니다.";
 }
