@@ -2,23 +2,24 @@ package bridge.service;
 
 import bridge.BridgeGame;
 import bridge.BridgeMaker;
-import bridge.BridgeRandomNumberGenerator;
+import bridge.BridgeNumberGenerator;
 import bridge.model.GameResult;
 
 public class BridgeGameService {
+
+    private final BridgeMaker bridgeMaker;
 
     private final BridgeGame bridgeGame;
 
     private int numberOfTries;
 
-    public BridgeGameService() {
+    public BridgeGameService(final BridgeNumberGenerator bridgeNumberGenerator) {
+        this.bridgeMaker = new BridgeMaker(bridgeNumberGenerator);
         this.bridgeGame = new BridgeGame();
         this.numberOfTries = 1;
     }
 
     public void setUpBridge(final int bridgeSize) {
-        //TODO: Refactoring later
-        BridgeMaker bridgeMaker = new BridgeMaker(new BridgeRandomNumberGenerator());
         bridgeGame.makeBridge(bridgeMaker.makeBridge(bridgeSize));
     }
 

@@ -2,6 +2,7 @@ package bridge.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import bridge.BridgeRandomNumberGenerator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ public class BridgeBridgeGameServiceTest {
 
     @BeforeAll
     static void setUp() {
-        bridgeGameService = new BridgeGameService();
+        bridgeGameService = new BridgeGameService(new BridgeRandomNumberGenerator());
         bridgeGameService.setUpBridge(3);
     }
 
