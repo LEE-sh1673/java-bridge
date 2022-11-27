@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class BridgeBridgeGameServiceTest {
 
-    static BridgeGameServiceImpl bridgeGameService;
+    static BridgeGameService bridgeGameService;
 
     @BeforeAll
     static void setUp() {
