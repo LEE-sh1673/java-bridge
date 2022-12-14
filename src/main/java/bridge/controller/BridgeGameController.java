@@ -1,8 +1,10 @@
 package bridge.controller;
 
+import bridge.BridgeMaker;
+import bridge.BridgeRandomNumberGenerator;
 import bridge.GameCommand;
 import bridge.model.GameResult;
-import bridge.service.BridgeGameService;
+import bridge.service.BridgeGame;
 import bridge.view.InputView;
 import bridge.view.OutputView;
 
@@ -12,29 +14,29 @@ public class BridgeGameController {
 
     private final OutputView outputView;
 
-    private final BridgeGameService bridgeGameService;
+    private final BridgeMaker bridgeMaker;
+
+    private final BridgeGame game;
 
     public BridgeGameController() {
         this.inputView = new InputView();
         this.outputView = new OutputView();
-        this.bridgeGameService = new BridgeGameService();
+        this.bridgeMaker = new BridgeMaker(new BridgeRandomNumberGenerator());
+        this.game = new BridgeGame();
     }
 
     public void start() {
         outputView.printGameStartMessage();
-
         setUpBridge();
         playGame();
-
-        outputView.printResult(bridgeGameService.isClear(),
-            bridgeGameService.getNumberOfTries()
-        );
+        askRetry();
+        outputView.printResult(game.isClear(), game.getNumberOfTries());
     }
 
     private void setUpBridge() {
         try {
             outputView.printInputBridgeSizeMessage();
-            bridgeGameService.setUpBridge(inputView.readBridgeSize());
+            game.setUp(bridgeMaker.makeBridge(inputView.readBridgeSize()));
         } catch (IllegalArgumentException e) {
             outputView.printErrorMessage(e);
             setUpBridge();
@@ -42,20 +44,11 @@ public class BridgeGameController {
     }
 
     private void playGame() {
-        play();
-
-        if (!bridgeGameService.isClear()) {
-            askRestart();
-        }
-    }
-
-
-    private void play() {
-        while (!bridgeGameService.isClear()) {
+        while (!game.isClear()) {
             outputView.updateMap(movePlayer());
             outputView.printMap();
 
-            if (bridgeGameService.isOver()) {
+            if (game.isOver()) {
                 break;
             }
         }
@@ -64,21 +57,25 @@ public class BridgeGameController {
     private GameResult movePlayer() {
         try {
             outputView.printInputMovingMessage();
-            bridgeGameService.movePlayer(inputView.readMoving());
-            return bridgeGameService.getResult();
+            game.move(inputView.readMoving());
+            return game.getResult();
         } catch (IllegalArgumentException e) {
             outputView.printErrorMessage(e);
             return movePlayer();
         }
     }
 
-    private void askRestart() {
-        outputView.printRestartMessage();
-        GameCommand gameCommand = getGameCommand();
+    private void askRetry() {
+        if (!game.isClear()) {
+            outputView.printRestartMessage();
+            processRestart();
+        }
+    }
 
-        if (gameCommand.isRestart()) {
-            bridgeGameService.retryGame();
+    private void processRestart() {
+        if (getGameCommand().isRestart()) {
             outputView.clearMap();
+            game.retry();
             playGame();
         }
     }

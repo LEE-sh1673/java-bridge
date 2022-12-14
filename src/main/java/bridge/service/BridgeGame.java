@@ -1,4 +1,4 @@
-package bridge;
+package bridge.service;
 
 import bridge.model.Bridge;
 import bridge.model.GameResult;
@@ -12,14 +12,15 @@ public class BridgeGame {
 
     private final Player player;
 
-    private Bridge bridge;
+    private int numberOfTries;
 
     public BridgeGame() {
         this.player = new Player();
     }
 
-    public void makeBridge(final List<String> directions) {
-        this.bridge = new Bridge(directions);
+    public void setUp(final List<String> directions) {
+        player.setDestination(new Bridge(directions));
+        numberOfTries = 1;
     }
 
     /**
@@ -32,7 +33,7 @@ public class BridgeGame {
     }
 
     public GameResult getResult() {
-        return player.cross(bridge);
+        return player.cross();
     }
 
     /**
@@ -42,13 +43,18 @@ public class BridgeGame {
      */
     public void retry() {
         player.retry();
+        numberOfTries++;
     }
 
     public boolean isClear() {
-        return player.isReached(bridge);
+        return player.isArrived();
     }
 
     public boolean isOver() {
-        return player.isFailedFrom(bridge);
+        return player.isFailed();
+    }
+
+    public int getNumberOfTries() {
+        return numberOfTries;
     }
 }

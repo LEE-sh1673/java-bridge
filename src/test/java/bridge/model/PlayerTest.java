@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,7 +14,11 @@ public class PlayerTest {
 
     static Player player = new Player();
 
-    static Bridge bridge = new Bridge(List.of("U", "D", "D"));
+    @BeforeAll
+    static void setUp() {
+        player = new Player();
+        player.setDestination(new Bridge(List.of("U", "D", "D")));
+    }
 
     @DisplayName("플레이어를 특정 방향으로 이동시킬 수 있다.")
     @ParameterizedTest
@@ -39,7 +44,7 @@ public class PlayerTest {
         for (String direction : directions) {
             player.moveTo(direction);
         }
-        GameResult gameResult = player.cross(bridge);
+        GameResult gameResult = player.cross();
         assertThat(gameResult.isFail()).isTrue();
     }
 
@@ -59,7 +64,7 @@ public class PlayerTest {
         for (String direction : directions) {
             player.moveTo(direction);
         }
-        GameResult gameResult = player.cross(bridge);
+        GameResult gameResult = player.cross();
         assertThat(gameResult.isPass()).isTrue();
     }
 

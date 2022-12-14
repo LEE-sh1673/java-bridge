@@ -2,7 +2,7 @@ package bridge.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import bridge.BridgeGame;
+import bridge.service.BridgeGame;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ public class BridgeGameTest {
 
     @BeforeEach
     void setUp() {
-        game.makeBridge(List.of("U", "D", "D"));
+        game.setUp(List.of("U", "D", "D"));
         game.retry();
     }
 
@@ -40,7 +40,7 @@ public class BridgeGameTest {
         final List<String> bridgeDirections,
         final boolean expected) {
 
-        game.makeBridge(bridgeDirections);
+        game.setUp(bridgeDirections);
         for (String direction : directions) {
             game.move(direction);
             assertThat(game.getResult().isPass()).isEqualTo(expected);

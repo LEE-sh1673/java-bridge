@@ -7,6 +7,8 @@ public class Player {
 
     private final List<Tile> path;
 
+    private Bridge destination;
+
     private int position;
 
     public Player() {
@@ -23,9 +25,9 @@ public class Player {
         return path.get(position - 1);
     }
 
-    public GameResult cross(final Bridge bridge) {
+    public GameResult cross() {
         Tile tile = getPosition();
-        return new GameResult(tile.getDirection(), bridge.contains(tile));
+        return new GameResult(tile.getDirection(), destination.contains(tile));
     }
 
     public void retry() {
@@ -33,15 +35,19 @@ public class Player {
         position = 0;
     }
 
-    public boolean isReached(final Bridge bridge) {
-        return isAllMatch(bridge) && bridge.matchSize(path.size());
+    public boolean isArrived() {
+        return isAllMatch() && destination.matchSize(path.size());
     }
 
-    private boolean isAllMatch(final Bridge bridge) {
-        return path.stream().allMatch(bridge::matchPosition);
+    private boolean isAllMatch() {
+        return path.stream().allMatch(destination::matchPosition);
     }
 
-    public boolean isFailedFrom(final Bridge bridge) {
-        return !bridge.matchPosition(getPosition());
+    public boolean isFailed() {
+        return !destination.matchPosition(getPosition());
+    }
+
+    public void setDestination(final Bridge bridge) {
+        destination = bridge;
     }
 }
