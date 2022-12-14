@@ -14,10 +14,10 @@ public class BridgeGameController {
 
     private final BridgeGameService bridgeGameService;
 
-    public BridgeGameController(final BridgeGameService bridgeGameService) {
+    public BridgeGameController() {
         this.inputView = new InputView();
         this.outputView = new OutputView();
-        this.bridgeGameService = bridgeGameService;
+        this.bridgeGameService = new BridgeGameService();
     }
 
     public void start() {
