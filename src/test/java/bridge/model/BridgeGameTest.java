@@ -2,6 +2,7 @@ package bridge.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import bridge.dto.PlayResultDto;
 import bridge.service.BridgeGame;
 import java.util.List;
 import java.util.stream.Stream;
@@ -43,7 +44,7 @@ public class BridgeGameTest {
         game.setUp(bridgeDirections);
         for (String direction : directions) {
             game.move(direction);
-            assertThat(game.getResult().isPass()).isEqualTo(expected);
+            assertThat(!game.isOver()).isEqualTo(expected);
         }
     }
 
@@ -85,7 +86,6 @@ public class BridgeGameTest {
     @CsvSource({"U,false", "D,true"})
     void returnTrueIfPlayerFailToCrossBridge(final String direction, final boolean expected) {
         game.move(direction);
-        game.getResult();
         assertThat(game.isOver()).isEqualTo(expected);
     }
 
@@ -95,7 +95,6 @@ public class BridgeGameTest {
     void playGameCorrectly(final List<String> directions, final boolean expected) {
         for (String direction : directions) {
             game.move(direction);
-            game.getResult();
 
             if (game.isOver()) {
                 break;
@@ -116,19 +115,21 @@ public class BridgeGameTest {
     @ParameterizedTest
     @MethodSource("provideDirectionWithGameResult")
     void getGameResults(final String movingDirection,
-        final Direction direction,
-        final String resultMessage) {
+        final String resultUpward,
+        final String resultDownward) {
 
-        game.move(movingDirection);
-        GameResult gameResult = game.getResult();
-        assertThat(gameResult.matchDirection(direction)).isTrue();
-        assertThat(gameResult.getMessage()).isEqualTo(resultMessage);
+        PlayResultDto resultDto = game.move(movingDirection);
+        List<String> upward = resultDto.getUpward();
+        List<String> downward = resultDto.getDownward();
+
+        assertThat(upward.get(0)).isEqualTo(resultUpward);
+        assertThat(downward.get(0)).isEqualTo(resultDownward);
     }
 
     private static Stream<Arguments> provideDirectionWithGameResult() {
         return Stream.of(
-            Arguments.of("U", Direction.UP, "O"),
-            Arguments.of("D", Direction.DOWN, "X")
+            Arguments.of("U", "O", " "),
+            Arguments.of("D", " ", "X")
         );
     }
 }

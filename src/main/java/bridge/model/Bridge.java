@@ -43,10 +43,6 @@ public class Bridge {
         return CompareResult.MISS;
     }
 
-    public boolean matchPosition(final Tile tile) {
-        return contains(tile).isMatch();
-    }
-
     public boolean matchSize(final int size) {
         return tiles.size() == size;
     }

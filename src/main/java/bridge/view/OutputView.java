@@ -1,27 +1,17 @@
 package bridge.view;
 
-import bridge.model.Direction;
-import bridge.model.GameResult;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import bridge.dto.GameResultDto;
+import bridge.dto.PlayResultDto;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
 
 /**
  * 사용자에게 게임 진행 상황과 결과를 출력하는 역할을 한다.
  */
 public class OutputView {
 
-    private final Map<Direction, List<String>> bridges;
+    private static final String BRIDGE_FROM = "[ %s ]";
 
-    public OutputView() {
-        this.bridges = new HashMap<>();
-        for (Direction direction : Direction.values()) {
-            bridges.put(direction, new ArrayList<>());
-        }
-    }
+    private static final String BRIDGE_MIDDLE = " | ";
 
     public void printGameStartMessage() {
         System.out.println("다리 건너기 게임을 시작합니다.");
@@ -48,37 +38,15 @@ public class OutputView {
      * <p>
      * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
-    public void printMap() {
-        printBridges();
+    public void printMap(final PlayResultDto resultDto) {
+        printBridgeFormat(resultDto.getUpward());
+        printBridgeFormat(resultDto.getDownward());
     }
-
-    public void updateMap(final GameResult gameResult) {
-        updateBridge(gameResult::matchDirection, gameResult.getMessage());
-        updateBridge(direction -> !gameResult.matchDirection(direction), " ");
-    }
-
-    private void updateBridge(final Predicate<Direction> condition, final String message) {
-        bridges.keySet()
-            .stream()
-            .filter(condition)
-            .forEach(direction -> bridges.get(direction).add(message));
-    }
-
-    private void printBridges() {
-        Arrays.stream(Direction.values()).forEach(this::printBridge);
-    }
-
-    private void printBridge(final Direction direction) {
-        System.out.print("[ ");
-        System.out.print(String.join(" | ", bridges.get(direction)));
-        System.out.println(" ]");
-    }
-
-    public void clearMap() {
-        bridges.clear();
-        for (Direction direction : Direction.values()) {
-            bridges.put(direction, new ArrayList<>());
-        }
+    
+    private void printBridgeFormat(List<String> bridge) {
+        String formatBridge = String.join(BRIDGE_MIDDLE, bridge);
+        String outputBridge = String.format(BRIDGE_FROM, formatBridge);
+        System.out.println(outputBridge);
     }
 
     /**
@@ -86,11 +54,11 @@ public class OutputView {
      * <p>
      * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
-    public void printResult(final boolean isGameCleared, final int numberOfTries) {
+    public void printResult(final GameResultDto gameResultDto) {
         System.out.println("\n최종 게임 결과");
-        printMap();
-        System.out.println("게임 성공 여부: " + getGameClearStatus(isGameCleared));
-        System.out.println("총 시도한 횟수: " + numberOfTries);
+        printMap(gameResultDto.getPlayResultDto());
+        System.out.println("게임 성공 여부: " + getGameClearStatus(gameResultDto.isClear()));
+        System.out.println("총 시도한 횟수: " + gameResultDto.getNumberOfTries());
     }
 
     private String getGameClearStatus(final boolean isGameCleared) {

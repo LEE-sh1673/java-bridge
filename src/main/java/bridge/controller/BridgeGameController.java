@@ -3,7 +3,7 @@ package bridge.controller;
 import bridge.BridgeMaker;
 import bridge.BridgeRandomNumberGenerator;
 import bridge.GameCommand;
-import bridge.model.GameResult;
+import bridge.dto.PlayResultDto;
 import bridge.service.BridgeGame;
 import bridge.view.InputView;
 import bridge.view.OutputView;
@@ -30,7 +30,7 @@ public class BridgeGameController {
         setUpBridge();
         playGame();
         askRetry();
-        outputView.printResult(game.isClear(), game.getNumberOfTries());
+        outputView.printResult(game.getTotalResult());
     }
 
     private void setUpBridge() {
@@ -45,8 +45,7 @@ public class BridgeGameController {
 
     private void playGame() {
         while (!game.isClear()) {
-            outputView.updateMap(movePlayer());
-            outputView.printMap();
+            outputView.printMap(movePlayer());
 
             if (game.isOver()) {
                 break;
@@ -54,11 +53,10 @@ public class BridgeGameController {
         }
     }
 
-    private GameResult movePlayer() {
+    private PlayResultDto movePlayer() {
         try {
             outputView.printInputMovingMessage();
-            game.move(inputView.readMoving());
-            return game.getResult();
+            return game.move(inputView.readMoving());
         } catch (IllegalArgumentException e) {
             outputView.printErrorMessage(e);
             return movePlayer();
@@ -74,7 +72,6 @@ public class BridgeGameController {
 
     private void processRestart() {
         if (getGameCommand().isRestart()) {
-            outputView.clearMap();
             game.retry();
             playGame();
         }

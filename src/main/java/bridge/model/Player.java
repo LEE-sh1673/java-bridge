@@ -16,35 +16,24 @@ public class Player {
         this.position = 0;
     }
 
-    public void moveTo(final String direction) {
-        path.add(new Tile(direction, position+1));
+    public PlayResult moveTo(final String direction) {
+        Tile playerMoved = new Tile(direction, position + 1);
         position++;
+        path.add(playerMoved);
+        return cross(playerMoved);
     }
 
-    public Tile getPosition() {
-        return path.get(position - 1);
+    private PlayResult cross(final Tile playerMoved) {
+        return new PlayResult(playerMoved.getDirection(), destination.contains(playerMoved));
     }
 
-    public GameResult cross() {
-        Tile tile = getPosition();
-        return new GameResult(tile.getDirection(), destination.contains(tile));
-    }
-
-    public void retry() {
+    public void reset() {
         path.clear();
         position = 0;
     }
 
     public boolean isArrived() {
-        return isAllMatch() && destination.matchSize(path.size());
-    }
-
-    private boolean isAllMatch() {
-        return path.stream().allMatch(destination::matchPosition);
-    }
-
-    public boolean isFailed() {
-        return !destination.matchPosition(getPosition());
+        return destination.matchSize(path.size());
     }
 
     public void setDestination(final Bridge bridge) {

@@ -9,10 +9,6 @@ public enum CompareResult {
         this.shape = shape;
     }
 
-    public boolean isMatch() {
-        return this == MATCH;
-    }
-
     public String getShape() {
         return shape;
     }

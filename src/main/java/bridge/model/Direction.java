@@ -36,6 +36,13 @@ public enum Direction {
             .orElse(DOWN.shape);
     }
 
+    public static Direction reverse(final Direction direction) {
+        if (direction == Direction.UP) {
+            return Direction.DOWN;
+        }
+        return Direction.UP;
+    }
+
     private boolean matchNumber(final int number) {
         return this.number == number;
     }

@@ -1,12 +1,12 @@
 package bridge.model;
 
-public class GameResult {
+public class PlayResult {
 
     private final Direction direction;
 
     private final CompareResult compareResult;
 
-    public GameResult(final Direction direction, final CompareResult compareResult) {
+    public PlayResult(final Direction direction, final CompareResult compareResult) {
         this.direction = direction;
         this.compareResult = compareResult;
     }
@@ -19,11 +19,11 @@ public class GameResult {
         return compareResult == CompareResult.MATCH;
     }
 
-    public String getMessage() {
-        return compareResult.getShape();
+    public Direction getDirection() {
+        return direction;
     }
 
-    public boolean matchDirection(final Direction direction) {
-        return this.direction == direction;
+    public String getMessage() {
+        return compareResult.getShape();
     }
 }

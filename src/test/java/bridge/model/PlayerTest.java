@@ -2,6 +2,7 @@ package bridge.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,32 +21,19 @@ public class PlayerTest {
         player.setDestination(new Bridge(List.of("U", "D", "D")));
     }
 
-    @DisplayName("플레이어를 특정 방향으로 이동시킬 수 있다.")
-    @ParameterizedTest
-    @MethodSource("provideDirectionWithOutput")
-    void movePlayerToSpecificDirection(final String direction, final Tile expected) {
-        player.moveTo(direction);
-        assertThat(player.getPosition()).isEqualTo(expected);
-    }
-
-    private static Stream<Arguments> provideDirectionWithOutput() {
-        return Stream.of(
-            Arguments.of("U", new Tile("U", 1)),
-            Arguments.of("D", new Tile("D", 2)),
-            Arguments.of("D", new Tile("D", 3))
-        );
-    }
-
     @DisplayName("플레이어가 다리의 특정 방향으로 이동할 수 있다. - FAIL")
     @ParameterizedTest
     @MethodSource("provideFailPlayerDirections")
     void movePlayerToDirectionInBridgeFAIL(final List<String> directions) {
-        player.retry();
+        player.reset();
+        List<PlayResult> playResults = new ArrayList<>();
+
         for (String direction : directions) {
-            player.moveTo(direction);
+            playResults.add(player.moveTo(direction));
         }
-        GameResult gameResult = player.cross();
-        assertThat(gameResult.isFail()).isTrue();
+        assertThat(playResults.stream()
+            .anyMatch(PlayResult::isFail)
+        ).isTrue();
     }
 
     private static Stream<Arguments> provideFailPlayerDirections() {
@@ -60,12 +48,15 @@ public class PlayerTest {
     @ParameterizedTest
     @MethodSource("providePassPlayerDirections")
     void movePlayerToDirectionInBridgePASS(final List<String> directions) {
-        player.retry();
+        player.reset();
+        List<PlayResult> playResults = new ArrayList<>();
+
         for (String direction : directions) {
-            player.moveTo(direction);
+            playResults.add(player.moveTo(direction));
         }
-        GameResult gameResult = player.cross();
-        assertThat(gameResult.isPass()).isTrue();
+        assertThat(playResults.stream()
+            .allMatch(PlayResult::isPass)
+        ).isTrue();
     }
 
     private static Stream<Arguments> providePassPlayerDirections() {
