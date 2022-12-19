@@ -16,11 +16,19 @@ public class Player {
         this.position = 0;
     }
 
+    public void setDestination(final List<String> bridge) {
+        destination = new Bridge(bridge);
+    }
+
     public PlayResult move(final String direction) {
         Tile playerMoved = new Tile(direction, position + 1);
-        position++;
-        path.add(playerMoved);
+        updatePath(playerMoved);
         return cross(playerMoved);
+    }
+
+    private void updatePath(final Tile playerMoved) {
+        path.add(playerMoved);
+        position++;
     }
 
     private PlayResult cross(final Tile playerMoved) {
@@ -28,8 +36,8 @@ public class Player {
     }
 
     public void reset() {
-        path.clear();
         position = 0;
+        path.clear();
     }
 
     public boolean isArrived() {
@@ -47,11 +55,6 @@ public class Player {
     }
 
     public boolean isFail() {
-        return path.stream()
-            .anyMatch(tile -> cross(tile).isFail());
-    }
-
-    public void setDestination(final List<String> bridge) {
-        destination = new Bridge(bridge);
+        return position != 0 && cross(path.get(position - 1)).isFail();
     }
 }
