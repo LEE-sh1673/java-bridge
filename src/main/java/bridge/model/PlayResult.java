@@ -1,7 +1,7 @@
 package bridge.model;
 
 public enum PlayResult {
-    PASS("O"), FAIL("X"), NONE(" ");
+    PASS("O"), FAIL("X");
 
     private final String shape;
 

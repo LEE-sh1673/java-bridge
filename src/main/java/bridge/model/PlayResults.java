@@ -10,6 +10,8 @@ public class PlayResults {
 
     private final Map<Direction, List<String>> results;
 
+    private static final String EMPTY = " ";
+
     public PlayResults() {
         results = new HashMap<>();
         initResults();
@@ -24,7 +26,7 @@ public class PlayResults {
     public void report(final String userMoved, final PlayResult playResult) {
         Direction direction = Direction.of(userMoved);
         results.get(direction).add(playResult.getShape());
-        results.get(Direction.reverse(direction)).add(PlayResult.NONE.getShape());
+        results.get(Direction.reverse(direction)).add(EMPTY);
     }
 
     public void clear() {
