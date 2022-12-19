@@ -1,5 +1,7 @@
 package bridge.model;
 
+import static bridge.ErrorMessage.INVALID_DIRECTION_TYPE;
+
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -20,7 +22,7 @@ public enum Direction {
     public static Direction of(final String shape) {
         return findDirection(direction -> direction.matchShape(shape))
             .orElseThrow(()
-                -> new IllegalArgumentException("[ERROR] 이동할 칸은 U 또는 D가 입력되어야 합니다.")
+                -> new IllegalArgumentException(INVALID_DIRECTION_TYPE)
             );
     }
 
