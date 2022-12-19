@@ -2,6 +2,7 @@ package bridge.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import bridge.dto.GameResultDto;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -21,8 +22,8 @@ public class BridgeBridgeGameTest {
     @Test
     void getNumberOfTries() {
         bridgeGame.retry();
-        int numberOfTries = bridgeGame.getNumberOfTries();
-        assertThat(numberOfTries).isEqualTo(2);
+        GameResultDto dto = bridgeGame.getGameResult();
+        assertThat(dto.getNumberOfTries()).isEqualTo(2);
     }
 
 }

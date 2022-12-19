@@ -31,7 +31,7 @@ public class BridgeGameTest {
         final boolean expected) {
 
         movePlayerToDirectionInBridge(directions, bridgeDirections, expected);
-        assertThat(game.isClear()).isEqualTo(expected);
+        assertThat(!game.isFail()).isEqualTo(expected);
     }
 
     @DisplayName("플레이어가 다리의 특정 방향으로 이동할 수 있다.")
@@ -44,7 +44,7 @@ public class BridgeGameTest {
         game.setUp(bridgeDirections);
         for (String direction : directions) {
             game.move(direction);
-            assertThat(!game.isOver()).isEqualTo(expected);
+            assertThat(!game.isFail()).isEqualTo(expected);
         }
     }
 
@@ -67,7 +67,7 @@ public class BridgeGameTest {
         final boolean expected) {
 
         movePlayerToDirectionInBridge(directions, bridgeDirections, expected);
-        assertThat(game.isClear()).isEqualTo(expected);
+        assertThat(!game.isFail()).isEqualTo(expected);
     }
 
     private static Stream<Arguments> provideFailPlayerDirections() {
@@ -86,7 +86,7 @@ public class BridgeGameTest {
     @CsvSource({"U,false", "D,true"})
     void returnTrueIfPlayerFailToCrossBridge(final String direction, final boolean expected) {
         game.move(direction);
-        assertThat(game.isOver()).isEqualTo(expected);
+        assertThat(game.isFail()).isEqualTo(expected);
     }
 
     @DisplayName("전체 기능 테스트")
@@ -96,11 +96,11 @@ public class BridgeGameTest {
         for (String direction : directions) {
             game.move(direction);
 
-            if (game.isOver()) {
+            if (game.isFail()) {
                 break;
             }
         }
-        assertThat(game.isClear()).isEqualTo(expected);
+        assertThat(!game.isFail()).isEqualTo(expected);
     }
 
     private static Stream<Arguments> providePlayerInputWithResult() {
@@ -118,7 +118,8 @@ public class BridgeGameTest {
         final String resultUpward,
         final String resultDownward) {
 
-        PlayResultDto resultDto = game.move(movingDirection);
+        game.move(movingDirection);
+        PlayResultDto resultDto = game.getPlayResult();
         List<String> upward = resultDto.getUpward();
         List<String> downward = resultDto.getDownward();
 

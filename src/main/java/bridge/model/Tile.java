@@ -13,11 +13,11 @@ public class Tile {
         this.position = position;
     }
 
-    public CompareResult compareTo(final Tile other) {
+    public PlayResult compareTo(final Tile other) {
         if (this.equals(other)) {
-            return CompareResult.MATCH;
+            return PlayResult.PASS;
         }
-        return CompareResult.MISS;
+        return PlayResult.FAIL;
     }
 
     @Override

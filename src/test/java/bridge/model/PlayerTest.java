@@ -18,7 +18,7 @@ public class PlayerTest {
     @BeforeAll
     static void setUp() {
         player = new Player();
-        player.setDestination(new Bridge(List.of("U", "D", "D")));
+        player.setDestination(List.of("U", "D", "D"));
     }
 
     @DisplayName("플레이어가 다리의 특정 방향으로 이동할 수 있다. - FAIL")
@@ -29,7 +29,7 @@ public class PlayerTest {
         List<PlayResult> playResults = new ArrayList<>();
 
         for (String direction : directions) {
-            playResults.add(player.moveTo(direction));
+            playResults.add(player.move(direction));
         }
         assertThat(playResults.stream()
             .anyMatch(PlayResult::isFail)
@@ -52,7 +52,7 @@ public class PlayerTest {
         List<PlayResult> playResults = new ArrayList<>();
 
         for (String direction : directions) {
-            playResults.add(player.moveTo(direction));
+            playResults.add(player.move(direction));
         }
         assertThat(playResults.stream()
             .allMatch(PlayResult::isPass)

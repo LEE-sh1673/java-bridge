@@ -1,29 +1,23 @@
 package bridge.model;
 
-public class PlayResult {
+public enum PlayResult {
+    PASS("O"), FAIL("X"), NONE(" ");
 
-    private final Direction direction;
+    private final String shape;
 
-    private final CompareResult compareResult;
-
-    public PlayResult(final Direction direction, final CompareResult compareResult) {
-        this.direction = direction;
-        this.compareResult = compareResult;
+    PlayResult(final String shape) {
+        this.shape = shape;
     }
 
-    public boolean isFail() {
-        return compareResult == CompareResult.MISS;
+    public String getShape() {
+        return shape;
     }
 
     public boolean isPass() {
-        return compareResult == CompareResult.MATCH;
+        return this == PASS;
     }
 
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public String getMessage() {
-        return compareResult.getShape();
+    public boolean isFail() {
+        return this == FAIL;
     }
 }

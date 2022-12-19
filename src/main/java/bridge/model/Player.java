@@ -16,7 +16,7 @@ public class Player {
         this.position = 0;
     }
 
-    public PlayResult moveTo(final String direction) {
+    public PlayResult move(final String direction) {
         Tile playerMoved = new Tile(direction, position + 1);
         position++;
         path.add(playerMoved);
@@ -24,7 +24,7 @@ public class Player {
     }
 
     private PlayResult cross(final Tile playerMoved) {
-        return new PlayResult(playerMoved.getDirection(), destination.contains(playerMoved));
+        return destination.contains(playerMoved);
     }
 
     public void reset() {
@@ -33,10 +33,25 @@ public class Player {
     }
 
     public boolean isArrived() {
+        return matchSize() && isAllPass();
+    }
+
+    private boolean matchSize() {
         return destination.matchSize(path.size());
     }
 
-    public void setDestination(final Bridge bridge) {
-        destination = bridge;
+    private boolean isAllPass() {
+        return path.stream()
+            .map(this::cross)
+            .allMatch(PlayResult::isPass);
+    }
+
+    public boolean isFail() {
+        return path.stream()
+            .anyMatch(tile -> cross(tile).isFail());
+    }
+
+    public void setDestination(final List<String> bridge) {
+        destination = new Bridge(bridge);
     }
 }

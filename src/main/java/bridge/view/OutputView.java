@@ -1,5 +1,17 @@
 package bridge.view;
 
+import static bridge.view.Constants.BRIDGE_FROM;
+import static bridge.view.Constants.BRIDGE_MIDDLE;
+import static bridge.view.Constants.GAME_RESULT_FAIL_MESSAGE;
+import static bridge.view.Constants.GAME_RESULT_MESSAGE;
+import static bridge.view.Constants.GAME_RESULT_NUMBER_OF_TRIES_MESSAGE;
+import static bridge.view.Constants.GAME_RESULT_STATUS_MESSAGE;
+import static bridge.view.Constants.GAME_RESULT_SUCCESS_MESSAGE;
+import static bridge.view.Constants.GAME_START_MESSAGE;
+import static bridge.view.Constants.READ_BRIDGE_SIZE_MESSAGE;
+import static bridge.view.Constants.READ_MOVING_MESSAGE;
+import static bridge.view.Constants.READ_OPTION_MESSAGE;
+
 import bridge.dto.GameResultDto;
 import bridge.dto.PlayResultDto;
 import java.util.List;
@@ -9,16 +21,12 @@ import java.util.List;
  */
 public class OutputView {
 
-    private static final String BRIDGE_FROM = "[ %s ]";
-
-    private static final String BRIDGE_MIDDLE = " | ";
-
     public void printGameStartMessage() {
-        System.out.println("다리 건너기 게임을 시작합니다.");
+        System.out.println(GAME_START_MESSAGE);
     }
 
     public void printInputBridgeSizeMessage() {
-        System.out.println("\n다리의 길이를 입력해주세요.");
+        System.out.println(READ_BRIDGE_SIZE_MESSAGE);
     }
 
     public void printErrorMessage(final Exception exception) {
@@ -26,11 +34,11 @@ public class OutputView {
     }
 
     public void printInputMovingMessage() {
-        System.out.println("\n이동할 칸을 선택해주세요. (위: U, 아래: D)");
+        System.out.println(READ_MOVING_MESSAGE);
     }
 
     public void printRestartMessage() {
-        System.out.println("\n게임을 다시 시도할지 여부를 입력해주세요. (재시도: R, 종료: Q)");
+        System.out.println(READ_OPTION_MESSAGE);
     }
 
     /**
@@ -55,16 +63,16 @@ public class OutputView {
      * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
     public void printResult(final GameResultDto gameResultDto) {
-        System.out.println("\n최종 게임 결과");
+        System.out.println(GAME_RESULT_MESSAGE);
         printMap(gameResultDto.getPlayResultDto());
-        System.out.println("게임 성공 여부: " + getGameClearStatus(gameResultDto.isClear()));
-        System.out.println("총 시도한 횟수: " + gameResultDto.getNumberOfTries());
+        System.out.println(GAME_RESULT_STATUS_MESSAGE + getGameClearStatus(gameResultDto.isClear()));
+        System.out.println(GAME_RESULT_NUMBER_OF_TRIES_MESSAGE + gameResultDto.getNumberOfTries());
     }
 
     private String getGameClearStatus(final boolean isGameCleared) {
         if (isGameCleared) {
-            return "성공";
+            return GAME_RESULT_SUCCESS_MESSAGE;
         }
-        return "실패";
+        return GAME_RESULT_FAIL_MESSAGE;
     }
 }

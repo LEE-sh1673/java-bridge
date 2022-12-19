@@ -2,7 +2,6 @@ package bridge.service;
 
 import bridge.dto.GameResultDto;
 import bridge.dto.PlayResultDto;
-import bridge.model.Bridge;
 import bridge.model.PlayResults;
 import bridge.model.Player;
 import java.util.List;
@@ -23,8 +22,8 @@ public class BridgeGame {
         this.playResults = new PlayResults();
     }
 
-    public void setUp(final List<String> directions) {
-        player.setDestination(new Bridge(directions));
+    public void setUp(final List<String> bridge) {
+        player.setDestination(bridge);
         numberOfTries = 1;
     }
 
@@ -33,8 +32,11 @@ public class BridgeGame {
      * <p>
      * 이동을 위해 필요한 메서드의 반환 타입(return type), 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
-    public PlayResultDto move(final String direction) {
-        playResults.report(player.moveTo(direction));
+    public void move(final String direction) {
+        playResults.report(direction, player.move(direction));
+    }
+
+    public PlayResultDto getPlayResult() {
         return playResults.toDto();
     }
 
@@ -49,19 +51,19 @@ public class BridgeGame {
         numberOfTries++;
     }
 
-    public boolean isClear() {
-        return player.isArrived() && playResults.isAllPass();
+    public boolean isEnd() {
+        return isFail() || isClear();
     }
 
-    public boolean isOver() {
-        return playResults.hasNonPass();
+    public boolean isFail() {
+        return player.isFail();
     }
 
-    public GameResultDto getTotalResult() {
+    private boolean isClear() {
+        return player.isArrived();
+    }
+
+    public GameResultDto getGameResult() {
         return new GameResultDto(playResults.toDto(), isClear(), numberOfTries);
-    }
-
-    public int getNumberOfTries() {
-        return numberOfTries;
     }
 }

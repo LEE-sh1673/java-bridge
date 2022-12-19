@@ -8,47 +8,31 @@ import java.util.Map;
 
 public class PlayResults {
 
-    private final List<PlayResult> results;
+    private final Map<Direction, List<String>> results;
 
     public PlayResults() {
-        results = new ArrayList<>();
+        results = new HashMap<>();
+        initResults();
     }
 
-    public void report(final PlayResult playResult) {
-        results.add(playResult);
+    private void initResults() {
+        for (Direction direction : Direction.values()) {
+            results.put(direction, new ArrayList<>());
+        }
     }
 
-    public boolean isAllPass() {
-        return results.stream().allMatch(PlayResult::isPass);
-    }
-
-    public boolean hasNonPass() {
-        return results.stream().anyMatch(PlayResult::isFail);
+    public void report(final String userMoved, final PlayResult playResult) {
+        Direction direction = Direction.of(userMoved);
+        results.get(direction).add(playResult.getShape());
+        results.get(Direction.reverse(direction)).add(PlayResult.NONE.getShape());
     }
 
     public void clear() {
         results.clear();
+        initResults();
     }
 
     public PlayResultDto toDto() {
-        return PlayResultDto.of(getGameResult());
-    }
-
-    private Map<Direction, List<String>> getGameResult() {
-        Map<Direction, List<String>> gameResult = new HashMap<>();
-
-        for (Direction direction : Direction.values()) {
-            gameResult.put(direction, new ArrayList<>());
-        }
-        mapGameResult(gameResult);
-        return gameResult;
-    }
-
-    private void mapGameResult(final Map<Direction, List<String>> gameResult) {
-        for (PlayResult result : results) {
-            Direction direction = result.getDirection();
-            gameResult.get(direction).add(result.getMessage());
-            gameResult.get(Direction.reverse(direction)).add(" ");
-        }
+        return PlayResultDto.of(results);
     }
 }

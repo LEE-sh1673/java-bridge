@@ -3,7 +3,6 @@ package bridge.controller;
 import bridge.BridgeMaker;
 import bridge.BridgeRandomNumberGenerator;
 import bridge.GameCommand;
-import bridge.dto.PlayResultDto;
 import bridge.service.BridgeGame;
 import bridge.view.InputView;
 import bridge.view.OutputView;
@@ -26,63 +25,68 @@ public class BridgeGameController {
     }
 
     public void start() {
-        outputView.printGameStartMessage();
-        setUpBridge();
+        setUp();
         playGame();
         askRetry();
-        outputView.printResult(game.getTotalResult());
+        printResult();
     }
 
-    private void setUpBridge() {
+    private void setUp() {
+        outputView.printGameStartMessage();
+        game.setUp(bridgeMaker.makeBridge(readBridgeSize()));
+    }
+
+    private int readBridgeSize() {
         try {
             outputView.printInputBridgeSizeMessage();
-            game.setUp(bridgeMaker.makeBridge(inputView.readBridgeSize()));
+            return inputView.readBridgeSize();
         } catch (IllegalArgumentException e) {
             outputView.printErrorMessage(e);
-            setUpBridge();
+            return inputView.readBridgeSize();
         }
     }
 
     private void playGame() {
-        while (!game.isClear()) {
-            outputView.printMap(movePlayer());
-
-            if (game.isOver()) {
-                break;
-            }
+        while (!game.isEnd()) {
+            game.move(readDirection());
+            outputView.printMap(game.getPlayResult());
         }
     }
 
-    private PlayResultDto movePlayer() {
+    private String readDirection() {
         try {
             outputView.printInputMovingMessage();
-            return game.move(inputView.readMoving());
+            return inputView.readMoving();
         } catch (IllegalArgumentException e) {
             outputView.printErrorMessage(e);
-            return movePlayer();
+            return readDirection();
         }
     }
 
     private void askRetry() {
-        if (!game.isClear()) {
+        if (game.isFail()) {
             outputView.printRestartMessage();
             processRestart();
         }
     }
 
     private void processRestart() {
-        if (getGameCommand().isRestart()) {
+        if (readGameCommand().isRestart()) {
             game.retry();
             playGame();
         }
     }
 
-    private GameCommand getGameCommand() {
+    private GameCommand readGameCommand() {
         try {
             return GameCommand.of(inputView.readGameCommand());
         } catch (IllegalArgumentException e) {
             outputView.printErrorMessage(e);
-            return getGameCommand();
+            return readGameCommand();
         }
+    }
+
+    private void printResult() {
+        outputView.printResult(game.getGameResult());
     }
 }

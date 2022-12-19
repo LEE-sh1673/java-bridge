@@ -15,7 +15,7 @@ public class Bridge {
 
     public Bridge(final List<String> direction) {
         validateSize(direction);
-        this.tiles = getTiles(direction);
+        this.tiles = mapTiles(direction);
     }
 
     private void validateSize(final List<String> direction) {
@@ -28,7 +28,7 @@ public class Bridge {
         return size > MAX_BRIDGE_SIZE || size < MIN_BRIDGE_SIZE;
     }
 
-    private List<Tile> getTiles(final List<String> direction) {
+    private List<Tile> mapTiles(final List<String> direction) {
         List<Tile> tiles = new ArrayList<>();
         for (int i = 0; i < direction.size(); i++) {
             tiles.add(new Tile(direction.get(i), i+1));
@@ -36,11 +36,11 @@ public class Bridge {
         return tiles;
     }
 
-    public CompareResult contains(final Tile tile) {
+    public PlayResult contains(final Tile tile) {
         if (tiles.contains(tile)) {
-            return CompareResult.MATCH;
+            return PlayResult.PASS;
         }
-        return CompareResult.MISS;
+        return PlayResult.FAIL;
     }
 
     public boolean matchSize(final int size) {

@@ -20,14 +20,14 @@ public class BridgeTest {
     @Test
     void compareTileWithBridgeMISS() {
         Tile tile = new Tile("U", 2);
-        assertThat(bridge.contains(tile)).isEqualTo(CompareResult.MISS);
+        assertThat(bridge.contains(tile)).isEqualTo(PlayResult.FAIL);
     }
 
-    @DisplayName("다리의 칸과 특정 칸을 비교할 수 있다. - MATCH")
+    @DisplayName("다리의 칸과 특정 칸을 비교할 수 있다. - PASS")
     @Test
     void compareTileWithBridgeMATCH() {
         Tile tile = new Tile("U", 1);
-        assertThat(bridge.contains(tile)).isEqualTo(CompareResult.MATCH);
+        assertThat(bridge.contains(tile)).isEqualTo(PlayResult.PASS);
     }
 
     @DisplayName("다리 길이에 3 ~ 20의 범위가 아닌 숫자가 입력되는 경우 예외를 발생시킨다.")
